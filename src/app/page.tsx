@@ -1,5 +1,10 @@
+import AuthScreen from "@/features/auth/components/auth-screen";
 import Image from "next/image";
 
 export default function Home() {
-  return <main>Hello World</main>;
+  return (
+    <main className="h-full">
+      <AuthScreen />
+    </main>
+  );
 }
