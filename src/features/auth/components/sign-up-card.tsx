@@ -13,15 +13,42 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { SignInFlow } from "../typs";
 import { useState } from "react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { TriangleAlert } from "lucide-react";
 
 interface SignUpCardProps {
   setState: (state: SignInFlow) => void;
 }
 
 export default function SignUpCard({ setState }: SignUpCardProps) {
+  const { signIn } = useAuthActions();
+
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+
+  const onPasswordSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError("password do not match");
+      return;
+    }
+
+    setPending(true);
+    signIn("password", { name, email, password, flow: "signUp" })
+      .catch(() => {
+        setError("Something went wrong");
+      })
+      .finally(() => setPending(false));
+  };
+
+  const onProviderSignup = (value: "github" | "google") => {
+    signIn(value);
+  };
 
   return (
     <Card className="h-full w-full p-8">
@@ -31,10 +58,24 @@ export default function SignUpCard({ setState }: SignUpCardProps) {
           User your email or another service to continue
         </CardDescription>
       </CardHeader>
+      {!!error && (
+        <div className="mb-6 flex items-center gap-x-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+          <TriangleAlert className="size-4" />
+          <p>{error}</p>
+        </div>
+      )}
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5">
+        <form onSubmit={onPasswordSignUp} className="space-y-2.5">
           <Input
-            disabled={false}
+            disabled={pending}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Full name"
+            type="name"
+            required
+          />
+          <Input
+            disabled={pending}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
@@ -42,7 +83,7 @@ export default function SignUpCard({ setState }: SignUpCardProps) {
             required
           />
           <Input
-            disabled={false}
+            disabled={pending}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
@@ -50,14 +91,14 @@ export default function SignUpCard({ setState }: SignUpCardProps) {
             required
           />
           <Input
-            disabled={false}
+            disabled={pending}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm password"
             type="password"
             required
           />
-          <Button type="submit" className="w-full" size="lg" disabled={false}>
+          <Button type="submit" className="w-full" size="lg" disabled={pending}>
             Continue
           </Button>
         </form>
@@ -74,8 +115,8 @@ export default function SignUpCard({ setState }: SignUpCardProps) {
             className="relative w-full"
             type="button"
             size="lg"
-            disabled={false}
-            onClick={() => {}}
+            disabled={pending}
+            onClick={() => onProviderSignup("google")}
           >
             <FcGoogle className="top-1/5 absolute left-2.5 size-5" />
             Contnue with Google
@@ -85,8 +126,8 @@ export default function SignUpCard({ setState }: SignUpCardProps) {
             className="relative w-full"
             type="button"
             size="lg"
-            disabled={false}
-            onClick={() => {}}
+            disabled={pending}
+            onClick={() => onProviderSignup("github")}
           >
             <FaGithub className="top-1/5 absolute left-2.5 size-5" />
             Contnue with Github
