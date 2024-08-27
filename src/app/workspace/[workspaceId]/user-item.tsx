@@ -2,7 +2,7 @@ import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -28,9 +28,9 @@ interface UserItemProps {
   label?: string;
   image?: string;
   variant?: VariantProps<typeof userItemVariants>["variant"];
-}
+};
 
-export const UserItem = ({
+export const UserItem = ({ 
   id,
   label = "Member",
   image,
@@ -47,13 +47,13 @@ export const UserItem = ({
       asChild
     >
       <Link href={`/workspace/${workspaceId}/member/${id}`}>
-        <Avatar className="mr-1 size-5 rounded-md">
+        <Avatar className="size-5 rounded-md mr-1">
           <AvatarImage className="rounded-md" src={image} />
-          <AvatarFallback className="rounded-md bg-sky-500 text-xs text-white">
+          <AvatarFallback className="rounded-md bg-sky-500 text-white text-xs">
             {avatarFallback}
           </AvatarFallback>
         </Avatar>
-        <span className="truncate text-sm">{label}</span>
+        <span className="text-sm truncate">{label}</span>
       </Link>
     </Button>
   );

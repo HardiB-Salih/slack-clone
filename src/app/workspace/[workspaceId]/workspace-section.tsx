@@ -11,7 +11,7 @@ interface WorkspaceSectionProps {
   label: string;
   hint: string;
   onNew?: () => void;
-}
+};
 
 export const WorkspaceSection = ({
   children,
@@ -22,21 +22,22 @@ export const WorkspaceSection = ({
   const [on, toggle] = useToggle(true);
 
   return (
-    <div className="mt-3 flex flex-col px-2">
-      <div className="group flex items-center px-3.5">
+    <div className="flex flex-col mt-3 px-2">
+      <div className="flex items-center px-3.5 group">
         <Button
           variant="transparent"
-          className="size-6 shrink-0 p-0.5 text-sm text-[#f9edffcc]"
+          className="p-0.5 text-sm text-[#f9edffcc] shrink-0 size-6"
           onClick={toggle}
         >
-          <FaCaretDown
-            className={cn("size-4 transition-transform", on && "-rotate-90")}
-          />
+          <FaCaretDown className={cn(
+            "size-4 transition-transform",
+            on && "-rotate-90"
+          )} />
         </Button>
         <Button
           variant="transparent"
           size="sm"
-          className="group h-[28px] items-center justify-start overflow-hidden px-1.5 text-sm text-[#f9edffcc]"
+          className="group px-1.5 text-sm text-[#f9edffcc] h-[28px] justify-start overflow-hidden items-center"
         >
           <span className="truncate">{label}</span>
         </Button>
@@ -46,7 +47,7 @@ export const WorkspaceSection = ({
               onClick={onNew}
               variant="transparent"
               size="iconSm"
-              className="ml-auto size-6 shrink-0 p-0.5 text-sm text-[#f9edffcc] opacity-0 transition-opacity group-hover:opacity-100"
+              className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto p-0.5 text-sm text-[#f9edffcc] size-6 shrink-0"
             >
               <PlusIcon className="size-5" />
             </Button>

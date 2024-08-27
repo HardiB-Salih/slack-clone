@@ -18,12 +18,9 @@ import { Doc } from "../../../../convex/_generated/dataModel";
 interface WorkspaceHeaderProps {
   workspace: Doc<"workspaces">;
   isAdmin: boolean;
-}
+};
 
-export const WorkspaceHeader = ({
-  workspace,
-  isAdmin,
-}: WorkspaceHeaderProps) => {
+export const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
 
@@ -35,33 +32,33 @@ export const WorkspaceHeader = ({
         name={workspace.name}
         joinCode={workspace.joinCode}
       />
-      <PreferencesModal
-        open={preferencesOpen}
-        setOpen={setPreferencesOpen}
+      <PreferencesModal 
+        open={preferencesOpen} 
+        setOpen={setPreferencesOpen} 
         initialValue={workspace.name}
       />
-      <div className="flex h-[49px] items-center justify-between gap-0.5 px-4">
+      <div className="flex items-center justify-between px-4 h-[49px] gap-0.5">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="transparent"
-              className="w-auto overflow-hidden p-1.5 text-lg font-semibold"
+              className="font-semibold text-lg w-auto p-1.5 overflow-hidden"
               size="sm"
             >
               <span className="truncate">{workspace.name}</span>
-              <ChevronDown className="ml-1 size-4 shrink-0" />
+              <ChevronDown className="size-4 ml-1 shrink-0" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="start" className="w-64">
-            <DropdownMenuItem className="cursor-pointer capitalize">
-              <div className="relative mr-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-[#616061] text-xl font-semibold text-white">
+            <DropdownMenuItem
+              className="cursor-pointer capitalize"            
+            >
+              <div className="size-9 relative overflow-hidden bg-[#616061] text-white font-semibold text-xl rounded-md flex items-center justify-center mr-2">
                 {workspace.name.charAt(0).toUpperCase()}
               </div>
               <div className="flex flex-col items-start">
-                <p className="font-bold">{workspace.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  Active workspace
-                </p>
+                <p className="font-bold" >{workspace.name}</p>
+                <p className="text-xs text-muted-foreground" >Active workspace</p>
               </div>
             </DropdownMenuItem>
             {isAdmin && (

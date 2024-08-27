@@ -24,7 +24,7 @@ interface PreferencesModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   initialValue: string;
-}
+};
 
 export const PreferencesModal = ({
   open,
@@ -35,77 +35,75 @@ export const PreferencesModal = ({
   const workspaceId = useWorkspaceId();
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
-    "This action is irreversible.",
+    "This action is irreversible."
   );
 
   const [value, setValue] = useState(initialValue);
   const [editOpen, setEditOpen] = useState(false);
 
-  const { mutate: updateWorkspace, isPending: isUpdatingWorkspace } =
-    useUpdateWorkspace();
-  const { mutate: removeWorkspace, isPending: isRemovingWorkspace } =
-    useRemoveWorkspace();
+  const { mutate: updateWorkspace, isPending: isUpdatingWorkspace } = useUpdateWorkspace();
+  const { mutate: removeWorkspace, isPending: isRemovingWorkspace } = useRemoveWorkspace();
 
   const handleRemove = async () => {
     const ok = await confirm();
 
     if (!ok) return;
 
-    removeWorkspace(
-      {
-        id: workspaceId,
+    removeWorkspace({
+      id: workspaceId
+    }, {
+      onSuccess: () => {
+        toast.success("Workspace removed");
+        router.replace("/");
       },
-      {
-        onSuccess: () => {
-          toast.success("Workspace removed");
-          router.replace("/");
-        },
-        onError: () => {
-          toast.error("Failed to remove workspace");
-        },
-      },
-    );
+      onError: () => {
+        toast.error("Failed to remove workspace");
+      }
+    })
   };
 
   const handleEdit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    updateWorkspace(
-      {
-        id: workspaceId,
-        name: value,
+    updateWorkspace({
+      id: workspaceId,
+      name: value,
+    }, {
+      onSuccess: () => {
+        toast.success("Workspace updated");
+        setEditOpen(false);
       },
-      {
-        onSuccess: () => {
-          toast.success("Workspace updated");
-          setEditOpen(false);
-        },
-        onError: () => {
-          toast.error("Failed to update workspace");
-        },
-      },
-    );
+      onError: () => {
+        toast.error("Failed to update workspace");
+      }
+    })
   };
-
+  
   return (
     <>
       <ConfirmDialog />
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="overflow-hidden bg-gray-50 p-0">
-          <DialogHeader className="border-b bg-white p-4">
-            <DialogTitle>{value}</DialogTitle>
+        <DialogContent className="p-0 bg-gray-50 overflow-hidden">
+          <DialogHeader className="p-4 border-b bg-white">
+            <DialogTitle>
+              {value}
+            </DialogTitle>
           </DialogHeader>
-          <div className="flex flex-col gap-y-2 px-4 pb-4">
+          <div className="px-4 pb-4 flex flex-col gap-y-2">
             <Dialog open={editOpen} onOpenChange={setEditOpen}>
               <DialogTrigger asChild>
-                <div className="cursor-pointer rounded-lg border bg-white px-5 py-4 hover:bg-gray-50">
+                <div className="px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold">Workspace name</p>
-                    <p className="text-sm font-semibold text-[#1264a3] hover:underline">
+                    <p className="text-sm font-semibold">
+                      Workspace name
+                    </p>
+                    <p className="text-sm text-[#1264a3] hover:underline font-semibold">
                       Edit
                     </p>
                   </div>
-                  <p className="text-sm">{value}</p>
+                  <p className="text-sm">
+                    {value}
+                  </p>
                 </div>
               </DialogTrigger>
               <DialogContent>
@@ -137,7 +135,7 @@ export const PreferencesModal = ({
             <button
               disabled={isRemovingWorkspace}
               onClick={handleRemove}
-              className="flex cursor-pointer items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600 hover:bg-gray-50"
+              className="flex items-center gap-x-2 px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50 text-rose-600"
             >
               <TrashIcon className="size-4" />
               <p className="text-sm font-semibold">Delete workspace</p>

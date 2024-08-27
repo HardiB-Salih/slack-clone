@@ -20,10 +20,10 @@ interface InviteModalProps {
   setOpen: (open: boolean) => void;
   name: string;
   joinCode: string;
-}
+};
 
-export const InviteModal = ({
-  open,
+export const InviteModal = ({ 
+  open, 
   setOpen,
   name,
   joinCode,
@@ -41,17 +41,14 @@ export const InviteModal = ({
 
     if (!ok) return;
 
-    mutate(
-      { workspaceId },
-      {
-        onSuccess: () => {
-          toast.success("Invite code regenerated");
-        },
-        onError: () => {
-          toast.error("Failed to regenerate invite code");
-        },
+    mutate({ workspaceId }, {
+      onSuccess: () => {
+        toast.success("Invite code regenerated");
       },
-    );
+      onError: () => {
+        toast.error("Failed to regenerate invite code");
+      }
+    });
   };
 
   const handleCopy = () => {
@@ -73,23 +70,23 @@ export const InviteModal = ({
               Use the code below to invite people to your workspace
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col items-center justify-center gap-y-4 py-10">
-            <p className="text-4xl font-bold uppercase tracking-widest">
+          <div className="flex flex-col gap-y-4 items-center justify-center py-10">
+            <p className="text-4xl font-bold tracking-widest uppercase">
               {joinCode}
             </p>
-            <Button onClick={handleCopy} variant="ghost" size="sm">
+            <Button
+              onClick={handleCopy}
+              variant="ghost"
+              size="sm"
+            >
               Copy link
-              <CopyIcon className="ml-2 size-4" />
+              <CopyIcon className="size-4 ml-2" />
             </Button>
           </div>
-          <div className="flex w-full items-center justify-between">
-            <Button
-              disabled={isPending}
-              onClick={handleNewCode}
-              variant="outline"
-            >
+          <div className="flex items-center justify-between w-full">
+            <Button disabled={isPending} onClick={handleNewCode} variant="outline">
               New code
-              <RefreshCcw className="ml-2 size-4" />
+              <RefreshCcw className="size-4 ml-2" />
             </Button>
             <DialogClose asChild>
               <Button>Close</Button>
